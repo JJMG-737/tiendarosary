@@ -1,1 +1,448 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mercadito Express - Tienda en Línea</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        header {
+            background-color: #007bff;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #007bff;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        nav button {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        nav button.active {
+            background: white;
+            color: #007bff;
+        }
+        .section {
+            display: none;
+        }
+        .section.active {
+            display: block;
+        }
+        .category {
+            margin-bottom: 40px;
+        }
+        .category h2 {
+            font-size: 2em;
+            margin-bottom: 20px;
+            color: #28a745;
+        }
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        .product-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: transform 0.2s;
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+        .product-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        .product-info {
+            padding: 15px;
+        }
+        .product-name {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .product-description {
+            color: #666;
+            margin-bottom: 10px;
+            font-size: 0.9em;
+        }
+        .product-price {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #007bff;
+            margin-bottom: 10px;
+        }
+        .add-to-cart {
+            width: 100%;
+            background: #ffc107;
+            color: #333;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .add-to-cart:hover {
+            background: #e0a800;
+        }
+        .cart-empty {
+            text-align: center;
+            padding: 50px;
+            color: #666;
+        }
+        .cart-item {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .quantity-btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        .remove-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .total {
+            background: #e9ecef;
+            padding: 20px;
+            text-align: right;
+            font-size: 1.5em;
+            font-weight: bold;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .schedule-form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .time-options {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+        .time-option {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .time-option input[type="radio"] {
+            margin: 0;
+        }
+        .btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 5px;
+        }
+        .btn:hover {
+            background: #0056b3;
+        }
+        .btn-secondary {
+            background: #6c757d;
+        }
+        .btn-secondary:hover {
+            background: #545b62;
+        }
+        .btn-success {
+            background: #28a745;
+        }
+        .btn-success:hover {
+            background: #1e7e34;
+        }
+        .confirmation {
+            text-align: center;
+            padding: 40px;
+            background: #d4edda;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .order-summary {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .whatsapp-btn {
+            background: #25D366;
+            color: white;
+            text-decoration: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 18px;
+            display: inline-block;
+            margin: 10px;
+        }
+        .whatsapp-btn:hover {
+            background: #128C7E;
+        }
+        .floating-cart {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #007bff;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 1000;
+        }
+        .contacts {
+            background: #f8f9fa;
+            padding: 40px 20px;
+            margin-top: 40px;
+            border-top: 1px solid #dee2e6;
+        }
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        .contact-icon {
+            color: #007bff;
+            width: 24px;
+            height: 24px;
+        }
+        @media (max-width: 768px) {
+            .products-grid {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            }
+            nav {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .cart-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Mercadito Express</h1>
+            <p>Tu tienda de productos diarios - ¡Pide en línea y recoge en horario programado!</p>
+        </header>
 
+        <nav>
+            <button onclick="showSection('products')" class="btn active">Productos</button>
+            <button onclick="showSection('cart')" class="btn">Carrito (<span id="cart-count">0</span>)</button>
+        </nav>
+
+        <!-- Sección de Productos -->
+        <section id="products" class="section active">
+            <div class="category">
+                <h2>🍭 Golosinas</h2>
+                <div class="products-grid">
+                    <div class="product-card">
+                        <img src="https://via.placeholder.com/300x200/8B4513/FFFFFF?text=Chocolates" alt="Variedad de chocolates con envolturas coloridas" class="product-image">
+                        <div class="product-info">
+                            <div class="product-name">Chocolates Variados</div>
+                            <div class="product-description">Mezcla de chocolates de leche, oscuro y blanco</div>
+                            <div class="product-price">$45.00</div>
+                            <button class="add-to-cart" onclick="addToCart(1, 'Chocolates Variados', 45.00)">Añadir al carrito</button>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <img src="https://via.placeholder.com/300x200/A52A2A/FFFFFF?text=Galletas" alt="Galletas con chispas de chocolate sobre un plato" class="product-image">
+                        <div class="product-info">
+                            <div class="product-name">Galletas de Chocolate</div>
+                            <div class="product-description">Galletas crujientes con trozos de chocolate</div>
+                            <div class="product-price">$32.50</div>
+                            <button class="add-to-cart" onclick="addToCart(2, 'Galletas de Chocolate', 32.50)">Añadir al carrito</button>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <img src="https://via.placeholder.com/300x200/FF69B4/FFFFFF?text=Gomitas" alt="Gomitas de colores variados en un tazón" class="product-image">
+                        <div class="product-info">
+                            <div class="product-name">Gomitas de Fruta</div>
+                            <div class="product-description">Gomitas surtidas de sabores frutales</div>
+                            <div class="product-price">$28.00</div>
+                            <button class="add-to-cart" onclick="addToCart(3, 'Gomitas de Fruta', 28.00)">Añadir al carrito</button>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <img src="https://via.placeholder.com/300x200/FFD700/000000?text=Paletas" alt="Paletas de caramelo coloridas en un expositor" class="product-image">
+                        <div class="product-info">
+                            <div class="product-name">Paletas de Caramelo</div>
+                            <div class="product-description">Paletas de caramelo con diversos sabores</div>
+                            <div class="product-price">$15.00</div>
+                            <button class="add-to-cart" onclick="addToCart(4, 'Paletas de Caramelo', 15.00)">Añadir al carrito</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="category">
+                <h2>💧 Aguas y Bebidas</h2>
+                <div class="products-grid">
+                    <div class="product-card">
+                        <img src="https://via.placeholder.com/300x200/ADD8E6/000000?text=Agua" alt="Botella de agua mineral con condensación" class="product-image">
+                        <div class="product-info">
+                            <div class="product-name">Agua Mineral 1L</div>
+                            <div class="product-description">Agua mineral natural sin gas</div>
+                            <div class="product-price">$18.00</div>
+                            <button class="add-to-cart" onclick="addToCart(5, 'Agua Mineral 1L', 18.00)">Añadir al carrito</button>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <img src="https://via.placeholder.com/300x200/8B0000/FFFFFF?text=Refresco" alt="Refresco de cola frío en botella de vidrio" class="product-image">
+                        <div class="product-info">
+                            <div class="product-name">Refresco de Cola</div>
+                            <div class="product-description">Refresco de cola 600ml</div>
+                            <div class="product-price">$25.00</div>
+                            <button class="add-to-cart" onclick="addToCart(6, 'Refresco de Cola', 25.00)">Añadir al carrito</button>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <img src="https://via.placeholder.com/300x200/FFA500/000000?text=Jugo" alt="Jugo de naranja fresco en jarra de vidrio" class="product-image">
+                        <div class="product-info">
+                            <div class="product-name">Jugo de Naranja</div>
+                            <div class="product-description">Jugo de naranja natural 1L</div>
+                            <div class="product-price">$35.00</div>
+                            <button class="add-to-cart" onclick="addToCart(7, 'Jugo de Naranja', 35.00)">Añadir al carrito</button>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <img src="https://via.placeholder.com/300x200/90EE90/000000?text=Agua+Saborizada" alt="Botellas de agua saborizada con rodajas de limón" class="product-image">
+                        <div class="product-info">
+                            <div class="product-name">Agua Saborizada</div>
+                            <div class="product-description">Agua con sabor a frutas 500ml</div>
+                            <div class="product-price">$22.00</div>
+                            <button class="add-to-cart" onclick="addToCart(8, 'Agua Saborizada', 22.00)">Añadir al carrito</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="category">
+                <h2>🍳 Utensilios de Cocina</h2>
+                <div class="products-grid">
+                    <div class="product-card">
+                        <img src="https://via.placeholder.com/300x200/C0C0C0/000000?text=Cuchillos" alt="Set profesional de cuchillos en bloque de madera" class="product-image">
+                        <div class="product-info">
+                            <div class="product-name">Set de Cuchillos</div>
+                            <div class="product-description">Set de 3 cuchillos de acero inoxidable</div>
+                            <div class="product-price">$280.00</div>
+                            <button class="add-to-cart" onclick="addToCart(9, 'Set de Cuchillos', 280.00)">Añadir al carrito</button>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <img src="https://via.placeholder.com/300x200/8B4513/FFFFFF?text=Tabla" alt="Tabla de madera para cortar con verduras" class="product-image">
+                        <div class="product-info">
+                            <div class="product-name">Tabla para Picar</div>
+                            <div class="product-description">Tabla de madera para picar alimentos</div>
+                            <div class="product-price">$120.00</div>
+                            <button class="add-to-cart" onclick="addToCart(10, 'Tabla para Picar', 120.00)">Añadir al carrito</button>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <img src="https://via.placeholder.com/300x200/808080/FFFFFF?text=Batidora" alt="Batidora manual de acero inoxidable sobre encimera" class="product-image">
+                        <div class="product-info">
+                            <div class="product-name">Batidora Manual</div>
+                            <div class="product-description">Batidora manual de acero inoxidable</div>
+                            <div class="product-price">$150.00</div>
+                            <button class="add-to-cart" onclick="addToCart(11, 'Batidora Manual', 150.00)">Añadir al carrito</button>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <img src="https://via.placeholder.com/300x200/FFFF00/000000?text=Tuppers" alt="Conjunto de recipientes plásticos para almacenar comida" class="product-image">
+                        <div class="product-info">
+                            <div class="product-name">Set de Tuppers</div>
+                            <div class="product-description">Set de 5 tuppers herméticos</div>
+                            <div class="product-price">$190.00</div>
+                            <button class="add-to-cart" onclick="addToCart(12, 'Set de Tuppers', 190.00)">Añadir al carrito</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección de Carrito -->
+        <section id="cart" class="section">
+            <h2 style="text-align: center; margin-bottom: 30px; font-size: 2em;">Tu Carrito de Compras</h2>
+            <div id="cart-items" class="cart-empty">
+                <p>Tu carrito está vacío</p>
+                <button class="btn" onclick="showSection('products')">Volver a productos</button>
+            </div>
+            <div id="cart-total" class
